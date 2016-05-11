@@ -12,7 +12,7 @@
     "dataflow"
   ],
   "dependencies": {
-    "noflo/noflo": "*",
+    "ifitzpatrick/noflo": "*",
     "noflo/noflo-strings": "*",
     "noflo/noflo-ajax": "*",
     "noflo/noflo-localstorage": "*",
