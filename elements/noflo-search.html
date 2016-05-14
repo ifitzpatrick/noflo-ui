@@ -272,7 +272,12 @@
           return;
         }
         this.classList.remove('overlay');
-        this.$.search.focus();
+
+        // Required for triggering focus from key press events
+        window.setTimeout(function () {
+          this.$.search.focus();
+        }.bind(this), 0);
+
         if (this.search === null) {
           // Show all
           this.search = '';
