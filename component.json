@@ -16,7 +16,7 @@
     "noflo/noflo-strings": "*",
     "noflo/noflo-ajax": "*",
     "noflo/noflo-localstorage": "*",
-    "noflo/noflo-interaction": "*",
+    "ifitzpatrick/noflo-interaction": "*",
     "noflo/noflo-objects": "*",
     "noflo/noflo-groups": "*",
     "noflo/noflo-routers": "*",
@@ -75,8 +75,10 @@
       "Router": "components/Router.coffee",
       "RunTests": "components/RunTests.coffee",
       "SearchGraphNodeToContext": "components/SearchGraphNodeToContext.coffee",
+      "SearchLibrary": "components/SearchLibrary.coffee",
       "SetGraphChanged": "components/SetGraphChanged.coffee",
       "SetToContext": "components/SetToContext.coffee",
+      "ShortcutRouter": "components/ShortcutRouter.coffee",
       "StoreUser": "components/StoreUser.coffee",
       "SubscribeGraph": "components/SubscribeGraph.coffee",
       "UpdateComponentLibrary": "components/UpdateComponentLibrary.coffee",
@@ -89,6 +91,7 @@
       "DirectRuntime": "graphs/DirectRuntime.fbp",
       "GithubStorage": "graphs/GithubStorage.fbp",
       "GithubSynchronization": "graphs/GithubSynchronization.fbp",
+      "KeyboardShortcuts": "graphs/KeyboardShortcuts.fbp",
       "LoadExample": "graphs/LoadExample.fbp",
       "LoadProjectData": "graphs/LoadProjectData.fbp",
       "LoadRuntimeData": "graphs/LoadRuntimeData.fbp",
@@ -161,7 +164,10 @@
     "components/CreateEmptyContext.coffee",
     "components/UpdateComponentLibrary.coffee",
     "components/RunTests.coffee",
-    "components/UpdateGraph.coffee"
+    "components/UpdateGraph.coffee",
+    "components/ShortcutRouter.coffee",
+    "graphs/KeyboardShortcuts.fbp",
+    "components/SearchLibrary.coffee"
   ],
   "json": [
     "component.json"
@@ -187,6 +193,7 @@
     "graphs/ProjectRuntime.fbp",
     "graphs/GithubSynchronization.fbp",
     "graphs/Save.fbp",
-    "graphs/Delete.fbp"
+    "graphs/Delete.fbp",
+    "graphs/KeyboardShortcuts.fbp"
   ]
 }
