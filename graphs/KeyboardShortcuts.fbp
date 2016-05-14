@@ -1,0 +1,14 @@
+INPORT=CurrentRoute.IN:IN
+
+'window' -> NAME Window(core/ReadGlobal)
+Window VALUE -> ELEMENT ListenKeyboard(dom/Listen)
+'keydown' -> TYPE ListenKeyboard
+
+'runtime' -> ROUTES FocusComponentSearch(ui/ShortcutRouter)
+CurrentRoute(core/Split) OUT -> CURRENT_ROUTE FocusComponentSearch
+'9' -> KEY FocusComponentSearch
+
+ListenKeyboard EVENT -> KEYPRESS FocusComponentSearch
+
+Search(ui/SearchLibrary) OUT -> ELEMENT Focus(interaction/Focus)
+FocusComponentSearch OUT -> TRIGGER Focus

@@ -33,6 +33,10 @@ ListenHash(interaction/ListenHash) INITIAL -> URL Router(ui/Router)
 ListenHash CHANGE -> URL Router
 Router ROUTE -> IN Dispatch
 
+'route' -> KEY CurrentRoute(objects/GetObjectKey)
+Router ROUTE -> IN CurrentRoute
+CurrentRoute OUT -> IN Shortcuts(ui/KeyboardShortcuts)
+
 # Start the app
 'noflo-ui' -> SELECTOR AppView
 '' -> START ListenWindow(interaction/ListenResize)
