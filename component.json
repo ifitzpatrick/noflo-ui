@@ -22,7 +22,7 @@
     "noflo/noflo-routers": "*",
     "noflo/noflo-dom": "*",
     "noflo/noflo-core": "*",
-    "noflo/noflo-polymer": "*",
+    "ifitzpatrick/noflo-polymer": "*",
     "noflo/noflo-indexeddb": "*",
     "noflo/noflo-github": "*",
     "noflo/noflo-graph": "*",

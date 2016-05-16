@@ -10,5 +10,6 @@ CurrentRoute(core/Split) OUT -> CURRENT_ROUTE FocusComponentSearch
 
 ListenKeyboard EVENT -> KEYPRESS FocusComponentSearch
 
-Search(ui/SearchLibrary) OUT -> ELEMENT Focus(interaction/Focus)
+'noflo-ui' -> SELECTOR AppView(polymer/noflo-ui)
+AppView SEARCH -> ELEMENT Focus(interaction/Focus)
 FocusComponentSearch OUT -> TRIGGER Focus
