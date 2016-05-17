@@ -99,15 +99,31 @@
       results: [],
       search: '',
       selected: null,
+      resultsChanged: function () {
+        var resultIndex,
+            currentLabel = this.selectedResult ? this.selectedResult.label : null;
+
+        if (!currentLabel) {
+          this.setSelected(0);
+        }
+        for (var i = 0, len=this.results.length; i < len; i++) {
+          if (this.results[i].label === currentLabel) {
+            this.setSelected(i);
+            return;
+          }
+        }
+        if (this.selected < this.results.length) {
+          this.setSelected(this.selected);
+        } else {
+          this.setSelected(this.results.length - 1);
+        }
+      },
       isSelected: function (index) {
         return (index === this.selected) ? 'selected': '';
       },
       setSelected: function (index) {
         this.selected = index;
-        this.fire('selectionchanged');
-      },
-      ready: function () {
-        this.setSelected(0);
+        this.selectedResult = this.results[index];
       },
       clicked: function (event, details, sender) {
         event.preventDefault();
@@ -120,38 +136,43 @@
         result.action();
       },
       getResultElement: function (index) {
-        return this.shadowRoot.querySelectorAll('.search-results-item')[index];
+        return Array.prototype.filter.call(
+          this.shadowRoot.querySelectorAll('.search-results-item'),
+          function (element) {
+            return parseInt(element.getAttribute('data-index')) === index;
+          }
+        )[0];
       },
       scrollBuffer: 30,
+      adjustScroll: function () {
+        var element = this.getResultElement(this.selected),
+            elementTop = element.getBoundingClientRect().top,
+            elementBottom = element.getBoundingClientRect().bottom,
+            elementTopRelative = element.offsetTop,
+            panelTop = this.panel.getBoundingClientRect().top,
+            panelBottom = this.panel.getBoundingClientRect().bottom,
+            elementHeight = element.getBoundingClientRect().height,
+            panelHeight = this.panel.getBoundingClientRect().height;
+
+        if (elementTop < panelTop) {
+          this.panel.scrollTop = elementTopRelative - this.scrollBuffer;
+        } else if (elementBottom > panelBottom) {
+          this.panel.scrollTop = elementTopRelative - panelHeight + elementHeight + this.scrollBuffer;
+        }
+      },
       selectPrevious: function () {
         if (this.selected > 0) {
           this.setSelected(this.selected - 1);
         }
 
-        var element = this.getResultElement(this.selected),
-            elementTop = element.getBoundingClientRect().top,
-            elementTopRelative = element.offsetTop,
-            panelTop = this.panel.getBoundingClientRect().top;
-
-        if (elementTop < panelTop) {
-          this.panel.scrollTop = elementTopRelative - this.scrollBuffer;
-        }
+        this.adjustScroll();
       },
       selectNext: function () {
         if (this.selected < this.results.length - 1) {
           this.setSelected(this.selected + 1);
         }
 
-        var element = this.getResultElement(this.selected),
-            elementBottom = element.getBoundingClientRect().bottom,
-            elementTopRelative = element.offsetTop,
-            panelBottom = this.panel.getBoundingClientRect().bottom,
-            elementHeight = element.getBoundingClientRect().height,
-            panelHeight = this.panel.getBoundingClientRect().height;
-
-        if (elementBottom > panelBottom) {
-          this.panel.scrollTop = elementTopRelative - panelHeight + elementHeight + this.scrollBuffer;
-        }
+        this.adjustScroll();
       },
       clickSelection: function () {
         var result = this.results[this.selected];
