@@ -4,8 +4,9 @@ INPORT=CurrentRoute.IN:IN
 Window VALUE -> ELEMENT ListenKeyboard(dom/Listen)
 'keydown' -> TYPE ListenKeyboard
 
-# Focus component library search on tab
+# Focus component library search on /
 'runtime' -> ROUTES FocusComponentSearch(ui/ShortcutRouter)
+'project' -> ROUTES FocusComponentSearch
 CurrentRoute(core/Split) OUT -> CURRENT_ROUTE FocusComponentSearch
 '191' -> KEY FocusComponentSearch
 ListenKeyboard EVENT -> KEYPRESS FocusComponentSearch

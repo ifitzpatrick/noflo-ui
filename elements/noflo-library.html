@@ -55,15 +55,21 @@
         Object.keys(library).forEach(function (name) {
           var match = false;
           var component = this.editor.getComponent(name);
+          var search = this._search.search.toLowerCase();
+          // Only search from start of words
+          var regexpStart = search.search(/^\W/) >= 0 || search === "" ? "" : "(^|\\W)";
+          var escaped = search.replace(/[\.\/]/gi, "\\$&");
+          var regexp = new RegExp(regexpStart + escaped);
+
           if (this._search.search === '') {
             // Empty search, all components match
             match = true;
           } else {
-            if (name.toLowerCase().indexOf(this._search.search.toLowerCase()) !== -1) {
+            if (name.toLowerCase().search(regexp) !== -1) {
               // Component name matches
               match = true;
             }
-            if (typeof component.description === 'string' && component.description.toLowerCase().indexOf(this._search.search.toLowerCase()) !== -1) {
+            if (typeof component.description === 'string' && component.description.toLowerCase().search(regexp) !== -1) {
               // Component description matches
               match = true;
             }
