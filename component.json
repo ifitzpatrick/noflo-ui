@@ -160,7 +160,10 @@
     "components/PopulateExampleData.coffee",
     "components/CreateEmptyContext.coffee",
     "components/UpdateComponentLibrary.coffee",
-    "components/RunTests.coffee"
+    "components/RunTests.coffee",
+    "components/UpdateGraph.coffee",
+    "components/ShortcutRouter.coffee",
+    "graphs/KeyboardShortcuts.fbp"
   ],
   "json": [
     "component.json"
