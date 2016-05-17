@@ -346,6 +346,7 @@
         if (event.keyIdentifier === 'U+001B') {
           this.clearSearch();
         }
+        event.stopPropagation();
       },
       searchChanged: function () {
         this.clearResults();
