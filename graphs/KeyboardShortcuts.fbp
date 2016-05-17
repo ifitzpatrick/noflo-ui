@@ -4,12 +4,11 @@ INPORT=CurrentRoute.IN:IN
 Window VALUE -> ELEMENT ListenKeyboard(dom/Listen)
 'keydown' -> TYPE ListenKeyboard
 
+# Focus component library search on tab
 'runtime' -> ROUTES FocusComponentSearch(ui/ShortcutRouter)
 CurrentRoute(core/Split) OUT -> CURRENT_ROUTE FocusComponentSearch
 '9' -> KEY FocusComponentSearch
-
 ListenKeyboard EVENT -> KEYPRESS FocusComponentSearch
-
 'noflo-ui' -> SELECTOR AppView(polymer/noflo-ui)
 AppView SEARCH -> ELEMENT Focus(interaction/Focus)
 FocusComponentSearch OUT -> TRIGGER Focus
