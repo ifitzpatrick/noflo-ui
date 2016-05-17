@@ -123,35 +123,35 @@
         return this.shadowRoot.querySelectorAll('.search-results-item')[index];
       },
       scrollBuffer: 30,
+      adjustScroll: function () {
+        var element = this.getResultElement(this.selected),
+            elementTop = element.getBoundingClientRect().top,
+            elementBottom = element.getBoundingClientRect().bottom,
+            elementTopRelative = element.offsetTop,
+            panelTop = this.panel.getBoundingClientRect().top,
+            panelBottom = this.panel.getBoundingClientRect().bottom,
+            elementHeight = element.getBoundingClientRect().height,
+            panelHeight = this.panel.getBoundingClientRect().height;
+
+        if (elementTop < panelTop) {
+          this.panel.scrollTop = elementTopRelative - this.scrollBuffer;
+        } else if (elementBottom > panelBottom) {
+          this.panel.scrollTop = elementTopRelative - panelHeight + elementHeight + this.scrollBuffer;
+        }
+      },
       selectPrevious: function () {
         if (this.selected > 0) {
           this.setSelected(this.selected - 1);
         }
 
-        var element = this.getResultElement(this.selected),
-            elementTop = element.getBoundingClientRect().top,
-            elementTopRelative = element.offsetTop,
-            panelTop = this.panel.getBoundingClientRect().top;
-
-        if (elementTop < panelTop) {
-          this.panel.scrollTop = elementTopRelative - this.scrollBuffer;
-        }
+        this.adjustScroll();
       },
       selectNext: function () {
         if (this.selected < this.results.length - 1) {
           this.setSelected(this.selected + 1);
         }
 
-        var element = this.getResultElement(this.selected),
-            elementBottom = element.getBoundingClientRect().bottom,
-            elementTopRelative = element.offsetTop,
-            panelBottom = this.panel.getBoundingClientRect().bottom,
-            elementHeight = element.getBoundingClientRect().height,
-            panelHeight = this.panel.getBoundingClientRect().height;
-
-        if (elementBottom > panelBottom) {
-          this.panel.scrollTop = elementTopRelative - panelHeight + elementHeight + this.scrollBuffer;
-        }
+        this.adjustScroll();
       },
       clickSelection: function () {
         var result = this.results[this.selected];
