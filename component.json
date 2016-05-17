@@ -75,7 +75,6 @@
       "Router": "components/Router.coffee",
       "RunTests": "components/RunTests.coffee",
       "SearchGraphNodeToContext": "components/SearchGraphNodeToContext.coffee",
-      "SearchLibrary": "components/SearchLibrary.coffee",
       "SetGraphChanged": "components/SetGraphChanged.coffee",
       "SetToContext": "components/SetToContext.coffee",
       "ShortcutRouter": "components/ShortcutRouter.coffee",
@@ -166,8 +165,7 @@
     "components/RunTests.coffee",
     "components/UpdateGraph.coffee",
     "components/ShortcutRouter.coffee",
-    "graphs/KeyboardShortcuts.fbp",
-    "components/SearchLibrary.coffee"
+    "graphs/KeyboardShortcuts.fbp"
   ],
   "json": [
     "component.json"

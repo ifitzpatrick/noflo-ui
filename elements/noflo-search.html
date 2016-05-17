@@ -189,7 +189,7 @@
       <i id="readonly" class="fa fa-lock"></i>
       </template>
     </div>
-    <input id="search" placeholder="Search components" on-keydown="{{ switchSearch }}" value="{{ search }}" type="text" autocapitalize="off" autocorrect="off" x-webkit-speech>
+    <input id="search" placeholder="Search components" on-keydown="{{ keyDown }}" value="{{ search }}" type="text" autocapitalize="off" autocorrect="off" x-webkit-speech>
     <button id="clear" on-click="{{ clearSearch }}" title="Clear search"><i class="fa fa-times"></i></button>
   </template>
   <script>
@@ -308,11 +308,13 @@
         if (this.resultsCard) {
           this.resultsCard.parentNode.removeChild(this.resultsCard);
           this.resultsCard = null;
+          this.resultsElement = null;
         }
         this.search = null;
         this.blur();
       },
-      switchSearch: function (event, detail, sender) {
+      keyDown: function (event, detail, sender) {
+        // Switch search on TAB
         if (event.keyIdentifier === 'U+0009') {
           event.preventDefault();
           this.searchLibrary = !this.searchLibrary;
@@ -326,6 +328,23 @@
             this.$.search.placeholder = 'Search processes';
           }
           this.searchChanged();
+        }
+
+        if (event.keyIdentifier === 'Up') {
+          this.resultsElement.selectPrevious();
+        }
+
+        if (event.keyIdentifier === 'Down') {
+          this.resultsElement.fire('select:next');
+          this.resultsElement.selectNext();
+        }
+
+        if (event.keyIdentifier === 'Enter') {
+          this.resultsElement.clickSelection();
+        }
+
+        if (event.keyIdentifier === 'U+001B') {
+          this.clearSearch();
         }
       },
       searchChanged: function () {
@@ -351,6 +370,7 @@
             this.resultsCard.type !== 'noflo-search-library-results') {
           this.resultsCard.parentNode.removeChild(this.resultsCard);
           this.resultsCard = null;
+          this.resultsElement = null;
         }
         if (this.resultsCard || this.search === null) {
           return;
@@ -359,10 +379,13 @@
           if (this.resultsCard) {
             this.resultsCard.parentNode.removeChild(this.resultsCard);
             this.resultsCard = null;
+            this.resultsElement = null;
           }
           return;
         }
         var results = document.createElement('noflo-search-library-results');
+        results.panel = this.panel;
+        this.resultsElement = results;
         results.id = 'results';
         results.search = this.search;
         results.results = this.searchLibraryResults;
@@ -382,6 +405,7 @@
             this.resultsCard.type !== 'noflo-search-graph-results') {
           this.resultsCard.parentNode.removeChild(this.resultsCard);
           this.resultsCard = null;
+          this.resultsElement = null;
         }
         if (this.resultsCard || this.search === null) {
           return;
@@ -390,10 +414,13 @@
           if (this.resultsCard) {
             this.resultsCard.parentNode.removeChild(this.resultsCard);
             this.resultsCard = null;
+            this.resultsElement = null;
           }
           return;
         }
         var results = document.createElement('noflo-search-graph-results');
+        results.panel = this.panel;
+        this.resultsElement = results;
         results.id = 'results';
         results.editor = this.editor;
         results.search = this.search;
@@ -406,6 +433,7 @@
         this.resultsCard.type = 'noflo-search-graph-results';
         this.resultsCard.appendChild(results);
         this.resultsCard.addTo(this.panel, true);
+
       },
       showGraphInspector: function (event) {
         if (event) {
