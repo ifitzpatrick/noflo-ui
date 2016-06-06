@@ -16,7 +16,7 @@
     "noflo/noflo-strings": "0.1.12",
     "noflo/noflo-ajax": "0.1.5",
     "noflo/noflo-localstorage": "0.1.0",
-    "noflo/noflo-interaction": "0.1.0",
+    "noflo/noflo-interaction": "*",
     "noflo/noflo-objects": "0.1.13",
     "noflo/noflo-groups": "0.1.8",
     "noflo/noflo-routers": "0.2.1",
