@@ -5,7 +5,7 @@ OUTPORT=MergeContext.OUT:CONTEXT
 OUTPORT=UpdateLibrary.RUNTIME:OUT
 
 # Route requests
-'open,connect,sendGraph,sendComponent,runTests' -> ROUTES Dispatch(routers/GroupRouter)
+'open,connect,sendGraph,sendComponent,runTests,list' -> ROUTES Dispatch(routers/GroupRouter)
 Dispatch ROUTE -> START Loading(ui/CreateLoadingContext)
 Loading OUT -> IN MergeContext(core/Merge)
 Dispatch MISSED -> IN ShowErrors(core/Output)
@@ -15,6 +15,7 @@ Dispatch MISSED -> IN ShowErrors(core/Output)
 CreateRuntimesCtx OUT -> CONTEXT SetRuntimes(ui/SetToContext)
 'runtimes' -> KEY SetRuntimes
 LoadData(ui/LoadRuntimeData) RUNTIMES -> RUNTIMES EnsureLocal(ui/EnsureLocalRuntimes)
+Dispatch OUT[5] -> RUNTIMES EnsureLocal
 EnsureLocal RUNTIMES -> VALUE SetRuntimes CONTEXT -> IN MergeContext
 
 # Add runtime connection to an existing context

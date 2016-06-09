@@ -647,6 +647,8 @@
           var runtime = event.detail;
           this.userRuntimes.push(runtime);
           this.runtimes.push(runtime);
+          this.fire('runtime', runtime);
+          this.fire('runtime:list', this.runtimes);
         }.bind(this));
         dialog.user = this.user;
         document.body.appendChild(dialog);
@@ -662,6 +664,8 @@
           var runtime = event.detail;
           this.userRuntimes.push(runtime);
           this.runtimes.push(runtime);
+          this.fire('runtime', runtime);
+          this.fire('runtime:list', this.runtimes);
         }.bind(this));
       },
       checkProject: function (project) {
