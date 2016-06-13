@@ -98,6 +98,9 @@
         this.$.main.addEventListener('runtime', function (event) {
           this.fire('project:save:runtime', event.detail);
         }.bind(this));
+        this.$.main.addEventListener('runtime:list', function (event) {
+          this.fire('runtime:list', event.detail);
+        }.bind(this));
         this.$.main.addEventListener('newproject', function (event) {
           this.fire('project:save:project', event.detail);
           this.ctx.projects.push(event.detail);
