@@ -322,6 +322,7 @@
       registryUrl: '$NOFLO_REGISTRY_SERVICE',
       help: null,
       attached: function () {
+        this.registry = require('flowhub-registry');
         this.openChanged();
         this.$.mainaccount.addEventListener('login', function (event) {
           this.fetchRuntimes();
@@ -335,11 +336,12 @@
             this.fire('theme', event.detail);
           }.bind(this), 1000);
         }.bind(this));
-        this.registry = require('flowhub-registry');
         this.help = document.querySelector('noflo-help');
 
         // Hide projects if not logged in
-        this.gridTokenChanged();
+        if ($NOFLO_REGISTRY_TOKEN_REQUIRED) {
+          this.gridTokenChanged();
+        }
       },
       openChanged: function () {
         if (String(this.open) === 'true') {
@@ -481,8 +483,12 @@
         if (event) {
           event.preventDefault();
         }
-        if (!this.gridToken) {
+        if (!this.gridToken && $NOFLO_REGISTRY_TOKEN_REQUIRED) {
           return;
+        } else if (!this.gridToken) {
+          // Hack because flowhub-registry lib cannot currently be configured
+          // to be used without a token
+          this.gridToken = 'faketoken';
         }
         var button = this.$.fetchruntimes;
         button.classList.add('fa-spin');

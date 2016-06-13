@@ -18,6 +18,7 @@ module.exports = (grunt) ->
     NOFLO_OAUTH_ENDPOINT_AUTHENTICATE: '/authenticate'
     NOFLO_OAUTH_ENDPOINT_USER: '/user'
     NOFLO_REGISTRY_SERVICE: 'https://api.flowhub.io'
+    NOFLO_REGISTRY_TOKEN_REQUIRED: 'true'
     NOFLO_APP_NAME: 'NoFlo UI'
     NOFLO_APP_TITLE: 'NoFlo Development Environment'
     NOFLO_APP_LOADING: 'Preparing NoFlo UI...'
@@ -26,8 +27,8 @@ module.exports = (grunt) ->
     NOFLO_APP_DESCRIPTION: 'Flow-Based Programming Environment'
     NOFLO_APP_VERSION: '<%= pkg.version %>'
     NOFLO_THEME: 'noflo'
-    NOFLO_USER_LOGIN_ENABLED: true
-    NOFLO_OFFLINE_MODE: false
+    NOFLO_USER_LOGIN_ENABLED: 'true'
+    NOFLO_OFFLINE_MODE: 'false'
 
   getConfig = (option) ->
     process.env[option] or config[option] or defaultConfig[option]
