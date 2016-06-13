@@ -256,6 +256,10 @@
         this.$.runtime.panel = this.$.context.$.fixed;
         this.$.packets.panel = this.$.context.$.context;
         this.$.search.panel = this.$.context.$.context;
+
+        this.addEventListener('noflo:ready', function () {
+          this.fire('search', this.$.search);
+        });
       },
       attached: function () {
         // Offer HTTPS

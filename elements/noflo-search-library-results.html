@@ -33,9 +33,19 @@
         box-sizing: border-box;
         min-height: 36px;
         position: relative;
-        cursor: cell;
-        padding-top: 18px !important;
+        cursor: pointer;
+        padding-top: 9px !important;
+        padding-bottom: 18px !important;
         padding-right: 12px !important;
+      }
+      .search-results-item:first-child {
+        padding-top: 19px !important;
+      }
+      .search-results-item.selected {
+        background-color: hsla(5, 80%, 60%, .6);
+      }
+      .search-results-item:hover {
+        background-color: hsl(0, 0%, 20%);
       }
       .search-results-item i {
         color: hsla(191, 100%, 92%, 0.898039);
@@ -57,7 +67,6 @@
         width: calc(100% - 36px);
         font-size: 12px;
         text-overflow: ellipsis;
-        text-transform: uppercase;
         white-space: nowrap;
         overflow-x: hidden;
       }
@@ -72,13 +81,12 @@
         line-height: calc(36px / 3);
         font-size: 10px;
         color: hsla(188, 15%, 60%, 0.8);
-        text-shadow: hsl(0, 0%, 0%) 0px 1px 1px;
       }
 
     </style>
     <ul class="search-results-list">
       <template repeat="{{ result, index in results }}">
-        <li class="search-results-item" data-index="{{ index }}" on-click="{{ clicked }}">
+        <li class="search-results-item {{isSelected(index, selected)}}" data-index="{{ index }}" on-click="{{ clicked }}">
           <i class="fa fa-{{ result.icon }}"></i>
           <h2>{{ result.label }}</h2>
           <p>{{ result.description }}</p>
@@ -90,10 +98,84 @@
     Polymer('noflo-search-library-results', {
       results: [],
       search: '',
+      selected: null,
+      resultsChanged: function () {
+        var resultIndex,
+            currentLabel = this.selectedResult ? this.selectedResult.label : null;
+
+        if (!currentLabel) {
+          this.setSelected(0);
+        }
+        for (var i = 0, len=this.results.length; i < len; i++) {
+          if (this.results[i].label === currentLabel) {
+            this.setSelected(i);
+            return;
+          }
+        }
+        if (this.selected < this.results.length) {
+          this.setSelected(this.selected);
+        } else {
+          this.setSelected(this.results.length - 1);
+        }
+      },
+      isSelected: function (index) {
+        return (index === this.selected) ? 'selected': '';
+      },
+      setSelected: function (index) {
+        this.selected = index;
+        this.selectedResult = this.results[index];
+      },
       clicked: function (event, details, sender) {
         event.preventDefault();
         var index = sender.getAttribute('data-index');
         var result = this.results[index];
+        if (!result || !result.action) {
+          return;
+        }
+        this.fire('resultclick', result);
+        result.action();
+      },
+      getResultElement: function (index) {
+        return Array.prototype.filter.call(
+          this.shadowRoot.querySelectorAll('.search-results-item'),
+          function (element) {
+            return parseInt(element.getAttribute('data-index')) === index;
+          }
+        )[0];
+      },
+      scrollBuffer: 30,
+      adjustScroll: function () {
+        var element = this.getResultElement(this.selected),
+            elementTop = element.getBoundingClientRect().top,
+            elementBottom = element.getBoundingClientRect().bottom,
+            elementTopRelative = element.offsetTop,
+            panelTop = this.panel.getBoundingClientRect().top,
+            panelBottom = this.panel.getBoundingClientRect().bottom,
+            elementHeight = element.getBoundingClientRect().height,
+            panelHeight = this.panel.getBoundingClientRect().height;
+
+        if (elementTop < panelTop) {
+          this.panel.scrollTop = elementTopRelative - this.scrollBuffer;
+        } else if (elementBottom > panelBottom) {
+          this.panel.scrollTop = elementTopRelative - panelHeight + elementHeight + this.scrollBuffer;
+        }
+      },
+      selectPrevious: function () {
+        if (this.selected > 0) {
+          this.setSelected(this.selected - 1);
+        }
+
+        this.adjustScroll();
+      },
+      selectNext: function () {
+        if (this.selected < this.results.length - 1) {
+          this.setSelected(this.selected + 1);
+        }
+
+        this.adjustScroll();
+      },
+      clickSelection: function () {
+        var result = this.results[this.selected];
         if (!result || !result.action) {
           return;
         }

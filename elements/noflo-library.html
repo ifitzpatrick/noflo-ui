@@ -22,7 +22,7 @@
         var nameParts = componentName.split('/');
         graph.addNode(id, componentName, {
           label: nameParts[nameParts.length - 1],
-          x: (-pan[0] + 334) / scale,
+          x: (-pan[0] + 380) / scale,
           y: (-pan[1] + 100) / scale
         });
 
@@ -35,6 +35,7 @@
         });
 
         graph.endTransaction('addnode');
+        return id;
       },
       search: function (obj) {
         this._search = obj;
@@ -54,15 +55,21 @@
         Object.keys(library).forEach(function (name) {
           var match = false;
           var component = this.editor.getComponent(name);
+          var search = this._search.search.toLowerCase();
+          // Only search from start of words
+          var regexpStart = search.search(/^\W/) >= 0 || search === "" ? "" : "(^|\\W)";
+          var escaped = search.replace(/[\.\/]/gi, "\\$&");
+          var regexp = new RegExp(regexpStart + escaped);
+
           if (this._search.search === '') {
             // Empty search, all components match
             match = true;
           } else {
-            if (name.toLowerCase().indexOf(this._search.search.toLowerCase()) !== -1) {
+            if (name.toLowerCase().search(regexp) !== -1) {
               // Component name matches
               match = true;
             }
-            if (typeof component.description === 'string' && component.description.toLowerCase().indexOf(this._search.search.toLowerCase()) !== -1) {
+            if (typeof component.description === 'string' && component.description.toLowerCase().search(regexp) !== -1) {
               // Component description matches
               match = true;
             }
@@ -89,7 +96,8 @@
               icon: component.icon || 'cog',
               description: component.description,
               action: function () {
-                this.addNode(component);
+                var id = this.addNode(component);
+                this.editor.selectedNodes = [this.editor.nofloGraph.getNode(id)];
               }.bind(this)
             });
           }.bind(this), 0);

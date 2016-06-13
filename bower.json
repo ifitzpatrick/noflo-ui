@@ -2,8 +2,8 @@
   "name": "noflo-ui",
   "description": " !!!! DO NOT ADD DEPENDENCIES HERE. USE NPM INSTEAD. !!!!! ",
   "dependencies": {
-    "polymer": "0.5.2",
-    "webcomponentsjs": "Polymer/webcomponentsjs#0.5.2",
-    "the-graph": "0.3.11"
+    "polymer": "0.5.6",
+    "webcomponentsjs": "Polymer/webcomponentsjs#0.6.3",
+    "the-graph": "the-grid/the-graph"
   }
 }

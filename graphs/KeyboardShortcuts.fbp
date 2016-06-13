@@ -1,0 +1,15 @@
+INPORT=CurrentRoute.IN:IN
+
+'window' -> NAME Window(core/ReadGlobal)
+Window VALUE -> ELEMENT ListenKeyboard(dom/Listen)
+'keydown' -> TYPE ListenKeyboard
+
+# Focus component library search on /
+'runtime' -> ROUTES FocusComponentSearch(ui/ShortcutRouter)
+'project' -> ROUTES FocusComponentSearch
+CurrentRoute(core/Split) OUT -> CURRENT_ROUTE FocusComponentSearch
+'191' -> KEY FocusComponentSearch
+ListenKeyboard EVENT -> KEYPRESS FocusComponentSearch
+'noflo-ui' -> SELECTOR AppView(polymer/noflo-ui)
+AppView SEARCH -> ELEMENT Focus(interaction/Focus)
+FocusComponentSearch OUT -> TRIGGER Focus
