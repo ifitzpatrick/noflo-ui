@@ -390,7 +390,7 @@ module.exports = ->
 
   # Our local tasks
   @registerTask 'nuke', ['clean']
-  @registerTask 'build', ['inlinelint', 'bower-install-simple',
+  @registerTask 'build', ['bower-install-simple',
                           'noflo_browser',
                           'copy:themes', 'vulcanize', 'string-replace:app', 'compress']
   @registerTask 'rebuild', ['nuke', 'build']
