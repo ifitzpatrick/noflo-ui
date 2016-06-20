@@ -8,10 +8,13 @@
           Graph name
           <input type="text" value="{{ name }}" placeholder="MyCoolGraph" required>
         </label>
-        <label>
-          Type
-          <noflo-type-selector type="{{ type }}" runtimes="{{ runtimes }}"></noflo-type-selector>
-        </label>
+        <template if="{{ project }}">
+          runtimes
+          <label>
+            Type
+            <noflo-type-selector type="{{ type }}" runtimes="{{ runtimes }}"></noflo-type-selector>
+          </label>
+        </template>
         <div class="toolbar">
           <button on-click="{{ send }}" class="{{ { disabled: !canSend } | tokenList }}">Create</button>
           <a on-click="{{ close }}">Cancel</a>
@@ -41,7 +44,7 @@
             return false;
           }.bind(this));
         }
-        if (this.name && this.project && !duplicates.length) {
+        if (this.name && (this.project || this.runtime) && !duplicates.length) {
           this.canSend = true;
         } else {
           this.canSend = false;
@@ -59,13 +62,22 @@
         }
         var noflo = require('noflo');
         var graph = new noflo.Graph(this.name);
-        graph.setProperties({
-          project: this.project.id,
-          id: this.project.id+'/'+this.name,
-          environment: {
-            type: this.type
-          }
-        });
+        if (this.project) {
+          graph.setProperties({
+            project: this.project.id,
+            id: this.project.id+'/'+this.name,
+            environment: {
+              type: this.type
+            }
+          });
+        } else {
+          graph.setProperties({
+            id: this.name,
+            environment: {
+              type: this.type
+            }
+          });
+        }
         this.fire('new', graph);
         this.close();
       },
