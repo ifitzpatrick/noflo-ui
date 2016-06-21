@@ -48,6 +48,12 @@ class UpdateGraph extends noflo.Component
         if event is 'data' and payload.payload?.graph is graph.name
           command = payload.command
 
+          # FIXME: This is a hack
+          # Prevent infinite loops caused when sending multiple messages at
+          # the same time to a runtime being echoed back.
+          _events = graph._events
+          graph._events = {}
+
           switch command
             when 'addnode'
               id = payload.payload.id
@@ -219,6 +225,8 @@ class UpdateGraph extends noflo.Component
 
               if oldGroup and not _.isEqual(oldGroup.metadata, metadata)
                 graph.setGroupMetadata name, metadata
+
+          graph._events = _events
 
     @outPorts = new noflo.OutPorts
 
