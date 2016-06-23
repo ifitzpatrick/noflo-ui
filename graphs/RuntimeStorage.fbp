@@ -50,6 +50,7 @@ ListComponents ERROR -> IN ShowErrors
 MergeContextPreSubscribe OUT -> CONTEXT SubscribeGraph(ui/SubscribeGraph)
 SubscribeGraph RUNTIME -> RUNTIME SendGraph(runtime/SendGraphChanges)
 SubscribeGraph GRAPH -> GRAPH SendGraph
+'remoteUpdate' -> REMOTE_TRANSACTION_ID SendGraph
 
 SubscribeGraph GRAPH -> GRAPH UpdateGraph(ui/UpdateGraph)
 ListenRuntime GRAPH -> EVENT UpdateGraph

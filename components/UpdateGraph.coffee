@@ -41,12 +41,14 @@ class UpdateGraph extends noflo.Component
         if (
           event is 'data' and
           payload.command is 'clear' and
-          payload.id is graph.name
+          payload.payload.id is graph.name
         )
           noflo.resetGraph graph
 
         if event is 'data' and payload.payload?.graph is graph.name
           command = payload.command
+
+          graph.startTransaction 'remoteUpdate', payload
 
           switch command
             when 'addnode'
@@ -73,8 +75,9 @@ class UpdateGraph extends noflo.Component
 
               oldNode = graph.getNode id
 
-              if oldNode and not _.isEqual(oldNode.metadata, metadata)
-                graph.setNodeMetadata id, metadata
+              #if oldNode and not _.isEqual(oldNode.metadata, metadata)
+                #graph.setNodeMetadata id, metadata
+              graph.setNodeMetadata id, metadata
 
             when 'addedge'
               srcNode = payload.payload.src.node
@@ -219,6 +222,8 @@ class UpdateGraph extends noflo.Component
 
               if oldGroup and not _.isEqual(oldGroup.metadata, metadata)
                 graph.setGroupMetadata name, metadata
+
+          graph.endTransaction 'remoteUpdate', payload
 
     @outPorts = new noflo.OutPorts
 
