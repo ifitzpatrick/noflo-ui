@@ -38,195 +38,195 @@ class UpdateGraph extends noflo.Component
       process: (event, payload) =>
         graph = @graph
 
-        if (
-          event is 'data' and
-          payload.command is 'clear' and
-          payload.id is graph.name
-        )
-          noflo.resetGraph graph
+        try
+          if (
+            event is 'data' and
+            payload.command is 'clear' and
+            payload.payload.id is graph.name
+          )
+            noflo.graph.mergeResolveTheirs graph, (new noflo.Graph)
 
-        if event is 'data' and payload.payload?.graph is graph.name
-          command = payload.command
+          if event is 'data' and payload.payload?.graph is graph.name
+            command = payload.command
 
-          # FIXME: This is a hack
-          # Prevent infinite loops caused when sending multiple messages at
-          # the same time to a runtime being echoed back.
-          _events = graph._events
-          graph._events = {}
+            graph.startTransaction 'remoteUpdate', payload
 
-          switch command
-            when 'addnode'
-              id = payload.payload.id
-              component = payload.payload.component
-              metadata = payload.payload.metadata
+            switch command
+              when 'addnode'
+                id = payload.payload.id
+                component = payload.payload.component
+                metadata = payload.payload.metadata
 
-              oldNode = graph.getNode id
+                oldNode = graph.getNode id
 
-              unless oldNode
-                graph.addNode id, component, metadata
+                unless oldNode
+                  graph.addNode id, component, metadata
 
-            when 'removenode'
-              id = payload.payload.id
+              when 'removenode'
+                id = payload.payload.id
 
-              oldNode = graph.getNode id
+                oldNode = graph.getNode id
 
-              if oldNode
-                graph.removeNode id
+                if oldNode
+                  graph.removeNode id
 
-            when 'changenode'
-              id = payload.payload.id
-              metadata = payload.payload.metadata
+              when 'changenode'
+                id = payload.payload.id
+                metadata = payload.payload.metadata
 
-              oldNode = graph.getNode id
+                oldNode = graph.getNode id
 
-              if oldNode and not _.isEqual(oldNode.metadata, metadata)
+                #if oldNode and not _.isEqual(oldNode.metadata, metadata)
+                  #graph.setNodeMetadata id, metadata
                 graph.setNodeMetadata id, metadata
 
-            when 'addedge'
-              srcNode = payload.payload.src.node
-              srcPort = payload.payload.src.port
-              srcIndex = payload.payload.src.index
+              when 'addedge'
+                srcNode = payload.payload.src.node
+                srcPort = payload.payload.src.port
+                srcIndex = payload.payload.src.index
 
-              targetNode = payload.payload.tgt.node
-              targetPort = payload.payload.tgt.port
-              targetIndex = payload.payload.tgt.index
+                targetNode = payload.payload.tgt.node
+                targetPort = payload.payload.tgt.port
+                targetIndex = payload.payload.tgt.index
 
-              oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
+                oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
 
-              unless oldEdge
-                graph.addEdgeIndex srcNode, srcPort, srcIndex,
-                  targetNode, targetPort, targetIndex
+                unless oldEdge
+                  graph.addEdgeIndex srcNode, srcPort, srcIndex,
+                    targetNode, targetPort, targetIndex
 
-            when 'removeedge'
-              srcNode = payload.payload.src.node
-              srcPort = payload.payload.src.port
+              when 'removeedge'
+                srcNode = payload.payload.src.node
+                srcPort = payload.payload.src.port
 
-              targetNode = payload.payload.tgt.node
-              targetPort = payload.payload.tgt.port
+                targetNode = payload.payload.tgt.node
+                targetPort = payload.payload.tgt.port
 
-              oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
+                oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
 
-              if oldEdge
-                graph.removeEdge srcNode, srcPort, targetNode, targetPort
+                if oldEdge
+                  graph.removeEdge srcNode, srcPort, targetNode, targetPort
 
-            when 'changeedge'
-              srcNode = payload.payload.src.node
-              srcPort = payload.payload.src.port
+              when 'changeedge'
+                srcNode = payload.payload.src.node
+                srcPort = payload.payload.src.port
 
-              targetNode = payload.payload.tgt.node
-              targetPort = payload.payload.tgt.port
+                targetNode = payload.payload.tgt.node
+                targetPort = payload.payload.tgt.port
 
-              metadata = payload.payload.metadata
+                metadata = payload.payload.metadata
 
-              oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
+                oldEdge = graph.getEdge srcNode, srcPort, targetNode, targetPort
 
-              if oldEdge and not _.isEqual(oldEdge.metadata, metadata)
-                graph.setEdgeMetadata srcNode, srcPort, targetNode, targetPort, metadata
+                if oldEdge and not _.isEqual(oldEdge.metadata, metadata)
+                  graph.setEdgeMetadata srcNode, srcPort, targetNode, targetPort, metadata
 
-            when 'addinitial'
-              data = payload.payload.src.data
-              node = payload.payload.tgt.node
-              port = payload.payload.tgt.port
-              index = payload.payload.tgt.index
-              metadata = payload.payload.metadata
+              when 'addinitial'
+                data = payload.payload.src.data
+                node = payload.payload.tgt.node
+                port = payload.payload.tgt.port
+                index = payload.payload.tgt.index
+                metadata = payload.payload.metadata
 
-              oldInitial = getInitial graph, node, port
+                oldInitial = getInitial graph, node, port
 
-              unless oldInitial
-                graph.addInitialIndex data, node, port, index, metadata
+                unless oldInitial
+                  graph.addInitialIndex data, node, port, index, metadata
 
-            when 'removeinitial'
-              node = payload.payload.tgt.node
-              port = payload.payload.tgt.port
+              when 'removeinitial'
+                node = payload.payload.tgt.node
+                port = payload.payload.tgt.port
 
-              oldInitial = getInitial graph, node, port
+                oldInitial = getInitial graph, node, port
 
-              if oldInitial
-                graph.removeInitial node, port
+                if oldInitial
+                  graph.removeInitial node, port
 
-            when 'addinport'
-              publicPort = payload.payload.public
-              node = payload.payload.node
-              port = payload.payload.port
-              metadata = payload.payload.metadata
+              when 'addinport'
+                publicPort = payload.payload.public
+                node = payload.payload.node
+                port = payload.payload.port
+                metadata = payload.payload.metadata
 
-              unless getInport graph, publicPort
-                graph.addInport publicPort, node, port, metadata
+                unless getInport graph, publicPort
+                  graph.addInport publicPort, node, port, metadata
 
-            when 'removeinport'
-              publicPort = payload.payload.public
-              graph.removeInport publicPort
+              when 'removeinport'
+                publicPort = payload.payload.public
+                graph.removeInport publicPort
 
-            when 'renameinport'
-              from = payload.payload.from
-              to = payload.payload.to
+              when 'renameinport'
+                from = payload.payload.from
+                to = payload.payload.to
 
-              renamed = getInport graph, to
+                renamed = getInport graph, to
 
-              unless renamed
-                graph.renameInport from, to
+                unless renamed
+                  graph.renameInport from, to
 
-            when 'addoutport'
-              publicPort = payload.payload.public
-              node = payload.payload.node
-              port = payload.payload.port
-              metadata = payload.payload.metadata
+              when 'addoutport'
+                publicPort = payload.payload.public
+                node = payload.payload.node
+                port = payload.payload.port
+                metadata = payload.payload.metadata
 
-              unless getOutport graph, publicPort
-                graph.addOutport publicPort, node, port, metadata
+                unless getOutport graph, publicPort
+                  graph.addOutport publicPort, node, port, metadata
 
-            when 'removeoutport'
-              publicPort = payload.payload.public
-              graph.removeOutport publicPort
+              when 'removeoutport'
+                publicPort = payload.payload.public
+                graph.removeOutport publicPort
 
-            when 'renameoutport'
-              from = payload.payload.from
-              to = payload.payload.to
+              when 'renameoutport'
+                from = payload.payload.from
+                to = payload.payload.to
 
-              renamed = getInport graph, to
+                renamed = getInport graph, to
 
-              unless renamed
-                graph.renameInport from, to
+                unless renamed
+                  graph.renameInport from, to
 
-              graph.renameOutport from, to
+                graph.renameOutport from, to
 
-            when 'addgroup'
-              name = payload.payload.name
-              nodes = payload.payload.nodes
-              metadata = payload.payload.metadata
+              when 'addgroup'
+                name = payload.payload.name
+                nodes = payload.payload.nodes
+                metadata = payload.payload.metadata
 
-              oldGroup = getGroup graph, name
+                oldGroup = getGroup graph, name
 
-              unless oldGroup
-                graph.addGroup name, nodes, metadata
+                unless oldGroup
+                  graph.addGroup name, nodes, metadata
 
-            when 'removegroup'
-              name = payload.payload.name
+              when 'removegroup'
+                name = payload.payload.name
 
-              oldGroup = getGroup graph, name
+                oldGroup = getGroup graph, name
 
-              if oldGroup
-                graph.removeGroup name
+                if oldGroup
+                  graph.removeGroup name
 
-            when 'renamegroup'
-              from = payload.payload.from
-              to = payload.payload.to
+              when 'renamegroup'
+                from = payload.payload.from
+                to = payload.payload.to
 
-              oldGroup = getGroup graph, from
+                oldGroup = getGroup graph, from
 
-              if oldGroup
-                graph.renameGroup from, to
+                if oldGroup
+                  graph.renameGroup from, to
 
-            when 'changegroup'
-              name = payload.payload.name
-              metadata = payload.payload.metadata
+              when 'changegroup'
+                name = payload.payload.name
+                metadata = payload.payload.metadata
 
-              oldGroup = getGroup graph, name
+                oldGroup = getGroup graph, name
 
-              if oldGroup and not _.isEqual(oldGroup.metadata, metadata)
-                graph.setGroupMetadata name, metadata
+                if oldGroup and not _.isEqual(oldGroup.metadata, metadata)
+                  graph.setGroupMetadata name, metadata
 
-          graph._events = _events
+            graph.endTransaction 'remoteUpdate', payload
+        catch ex
+          debugger
 
     @outPorts = new noflo.OutPorts
 

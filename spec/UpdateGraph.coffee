@@ -3,7 +3,7 @@ chai = require 'chai' unless chai
 _ = require 'underscore'
 
 UpdateGraph = require '../components/UpdateGraph.coffee'
-BaseRuntime = require '../components/flowbased-fbp-protocol-client/src/base.coffee'
+BaseRuntime = require '../node_modules/flowbased-fbp-protocol-client/src/base.coffee'
 
 describe 'Update Graph', ->
   component = null
