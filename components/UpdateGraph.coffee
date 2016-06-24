@@ -27,6 +27,12 @@ class UpdateGraph extends noflo.Component
   constructor: ->
     @inPorts = new noflo.InPorts
 
+    @inPorts.add 'runtime',
+      datatype: 'object'
+      process: (event, payload) =>
+        if event is 'data'
+          @runtime = payload
+
     @inPorts.add 'graph',
       datatype: 'object'
       process: (event, payload) =>
@@ -36,6 +42,9 @@ class UpdateGraph extends noflo.Component
     @inPorts.add 'event',
       datatype: 'object'
       process: (event, payload) =>
+        if parseFloat(@runtime.definition.version) > 0.6
+          return
+
         graph = @graph
 
         if (
