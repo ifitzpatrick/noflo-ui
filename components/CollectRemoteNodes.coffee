@@ -7,7 +7,7 @@ exports.getComponent = ->
     datatype: 'object'
     process: (event, payload) ->
       return unless event is 'data'
-      unless payload.remote?.length
+      unless (payload.remote?.length or payload.graphs?.length)
         c.outPorts.context.send payload
         c.outPorts.context.disconnect()
         return
@@ -18,7 +18,11 @@ exports.getComponent = ->
 
       if 'graph:getgraph' in payload.runtime.definition.capabilities
         graphName = payload.runtime.definition.graph
-        payload.graphs.push new noflo.Graph graphName, caseSensitive: true
+        if graphName
+          payload.graphs.push new noflo.Graph graphName, caseSensitive: true
+        else
+          graphName = payload.graphs[0].name
+
         payload.state = 'ok'
 
         c.outPorts.context.send payload
