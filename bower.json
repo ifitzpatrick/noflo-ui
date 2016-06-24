@@ -5,5 +5,10 @@
     "polymer": "0.5.6",
     "webcomponentsjs": "Polymer/webcomponentsjs#0.6.3",
     "the-graph": "ifitzpatrick/the-graph#0.4.4i"
+  },
+  "resolutions": {
+    "polymer": "0.5.6",
+    "webcomponentsjs": "0.6.3",
+    "react": "0.14.3"
   }
 }
