@@ -109,6 +109,9 @@
           this.fire('project:save:graph', event.detail);
           this.fire('runtime:sendGraph', event.detail);
         }.bind(this));
+        this.$.context.addEventListener('contextwidth', function (event) {
+          this.$.search.style.width = event.detail;
+        }.bind(this));
         this.$.runtime.addEventListener('runtime', function (event) {
           var newCtx = {};
           for (var key in this.ctx) {

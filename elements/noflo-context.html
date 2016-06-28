@@ -8,7 +8,7 @@
   <template>
     <style>
       #context {
-        position: fixed;
+        position: relative;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
         left: 36px;
@@ -19,9 +19,21 @@
         display: block;
         overflow-y: auto;
         overflow-x: visible;
+        z-index: 1;
+      }
+      #slider {
+        position: fixed;
+        top: -72px;
+        bottom: 0px;
+        right: -20px;
+        width: 20px;
+        opacity: 0;
+        cursor: ew-resize;
       }
     </style>
-    <section id="context"></section>
+    <section id="context">
+      <div id="slider"></div>
+    </section>
     <the-panel id="fixed" edge="right" size="324" handle="36" automatic="false">
       <header></header>
       <main></main>
@@ -53,6 +65,35 @@
         document.addEventListener('touchstart', function () {});
 
         this.help = document.querySelector('noflo-help');
+
+        this.$.slider.addEventListener('mousedown', function (e) {
+          this.slide = true;
+        }.bind(this));
+
+        window.addEventListener('mouseup', function (e) {
+          this.slide = false;
+        }.bind(this));
+
+        window.addEventListener('mousemove', function (e) {
+          var maxWidth = window.innerWidth - 324 - 36,
+              minWidth = 72 * 4,
+              left, width, cssWidth;
+
+          if (this.slide) {
+            left = this.$.context.getBoundingClientRect().left;
+            width = e.x - left;
+
+            if (width > maxWidth) {
+              width = maxWidth;
+            } else if (width < minWidth) {
+              width = minWidth;
+            }
+
+            cssWidth = width + "px";
+            this.$.context.style.width = cssWidth;
+            this.fire('contextwidth', cssWidth);
+          }
+        }.bind(this));
       },
       clearSelection: function () {
         var edge, node;
