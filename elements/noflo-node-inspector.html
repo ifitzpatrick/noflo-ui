@@ -3,6 +3,14 @@
 <polymer-element name="noflo-node-inspector" attributes="node component graph errorLog" class="the-card-content">
   <template>
     <style>
+      h2 {
+        float: left;
+        position: relative;
+        margin-left: 10px;
+        width: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
       .ports {
         margin-bottom: 8px;
       }
@@ -16,7 +24,7 @@
         clear: left;
         font-size: 12px;
         padding-top: 0;
-        width: 87px;
+        width: 29%;
         line-height: 36px;
         overflow: hidden;
       }
@@ -25,7 +33,7 @@
         margin: 0px;
         padding: 0px;
         font-size: 10px;
-        margin-left: 87px;
+        margin-left: 30%;
         margin-bottom: 3px;
         line-height: 13px;
         max-height: 26px;
@@ -102,7 +110,7 @@
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        width: 178px;
+        width: 70%;
         height: 36px;
         border: none;
         font-family: "SourceCodePro",Helvetica,Arial,sans-serif;
@@ -271,9 +279,9 @@
         display: inline;
         line-height: 36px;
         font-size: 10px;
-        float: right;
+        float: left;
         position: absolute;
-        left: 86px;
+        left: 30%;
         text-transform: uppercase;
         opacity: 0.5;
         width: 36px;
@@ -284,22 +292,22 @@
         z-index: 5;
         height: 36px;
       }
-      
-      ul.ports li.port-type-color label span:before,
-      ul.ports li.port-type-int label span:before,
-      ul.ports li.port-type-number label span:before {
+
+      ul.ports li.port-type-color label span::before,
+      ul.ports li.port-type-int label span::before,
+      ul.ports li.port-type-number label span::before {
         content: '#';
       }
-      ul.ports li.port-type-array label span:before {
+      ul.ports li.port-type-array label span::before {
         content: '[]';
       }
-      ul.ports li.port-type-object label span:before {
+      ul.ports li.port-type-object label span::before {
         content: '{}';
       }
-      ul.ports li.port-type-string label span:before {
+      ul.ports li.port-type-string label span::before {
         content: '"';
       }
-      ul.ports li.port-type-all label span:before {
+      ul.ports li.port-type-all label span::before {
         content: '*';
       }
 
