@@ -45,6 +45,7 @@
       },
       openChanged: function () {
         this.updateVisibility();
+        this.fire('panel:open', this.open);
       },
       automaticChanged: function () {
         if (this.automatic) {

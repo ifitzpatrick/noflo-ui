@@ -109,9 +109,23 @@
           this.fire('project:save:graph', event.detail);
           this.fire('runtime:sendGraph', event.detail);
         }.bind(this));
+
+        // Slider
         this.$.context.addEventListener('contextwidth', function (event) {
-          this.$.search.style.width = event.detail;
+          this.$.search.style.width = event.detail + 'px';
+          this.$.project.$.account.size = event.detail +
+            this.$.project.$.account.handle;
+          this.$.project.$.account.updateVisibility();
         }.bind(this));
+        this.$.context.addEventListener('slide', function (event) {
+          var method = event.detail ? 'add' : 'remove';
+          this.$.project.$.account.classList[method]('slide');
+        }.bind(this));
+        this.$.project.addEventListener('panel:open', function (event) {
+          var method = event.detail ? 'add' : 'remove';
+          this.$.context.$.context.classList[method]('covered');
+        }.bind(this));
+
         this.$.runtime.addEventListener('runtime', function (event) {
           var newCtx = {};
           for (var key in this.ctx) {

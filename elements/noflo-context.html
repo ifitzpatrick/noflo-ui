@@ -21,6 +21,9 @@
         overflow-x: visible;
         z-index: 2;
       }
+      #context.covered {
+        height: 100%;
+      }
       #slider {
         position: fixed;
         top: -72px;
@@ -68,10 +71,12 @@
 
         this.$.slider.addEventListener('mousedown', function (e) {
           this.slide = true;
+          this.fire('slide', true);
         }.bind(this));
 
         window.addEventListener('mouseup', function (e) {
           this.slide = false;
+          this.fire('slide', false);
         }.bind(this));
 
         window.addEventListener('mousemove', function (e) {
@@ -91,7 +96,7 @@
 
             cssWidth = width + "px";
             this.$.context.style.width = cssWidth;
-            this.fire('contextwidth', cssWidth);
+            this.fire('contextwidth', width);
           }
         }.bind(this));
       },
