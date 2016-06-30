@@ -24,6 +24,10 @@ exports.getComponent = ->
   c.inPorts.add 'in',
     datatype: 'object'
     process: (event, payload) ->
+      if event is 'begingroup'
+        c.outPorts.out.send
+          clearLibrary: true
+
       return unless event is 'data'
       return unless payload.componentDefinition
       def = payload.componentDefinition
