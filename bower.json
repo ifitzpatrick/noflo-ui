@@ -4,7 +4,7 @@
   "dependencies": {
     "polymer": "0.5.6",
     "webcomponentsjs": "Polymer/webcomponentsjs#0.6.3",
-    "the-graph": "ifitzpatrick/the-graph#0.4.5i"
+    "the-graph": "ifitzpatrick/the-graph#0.4.6i"
   },
   "resolutions": {
     "hammerjs": "~2.0.8",
