@@ -156,7 +156,9 @@
 
         this.description = this.graph.properties.description;
         this.icon = this.graph.properties.icon || '';
-        this.type = this.graph.properties.environment.type;
+        if (this.graph.environment) {
+          this.type = this.graph.properties.environment.type;
+        }
         this.view = 'properties';
 
         this.inGraph = [];
