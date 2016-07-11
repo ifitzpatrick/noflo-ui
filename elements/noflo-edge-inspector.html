@@ -114,8 +114,14 @@
         var tgt = this.edge.to;
         this.sourceNode = this.nodeLabel(src.node);
         this.sourcePort = src.port;
+        if (src.index !== undefined && src.index !== null) {
+          this.sourcePort += '[' + src.index + ']';
+        }
         this.targetNode = this.nodeLabel(tgt.node);
         this.targetPort = tgt.port;
+        if (tgt.index !== undefined && tgt.index !== null) {
+          this.targetPort += '[' + tgt.index + ']';
+        }
         this.route = this.edge.metadata.route;
         this.animate();
       },
