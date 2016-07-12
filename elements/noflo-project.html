@@ -19,15 +19,16 @@
         margin-bottom: 144px;
       }
       ul.graphs li {
-        width: 245px;
+        min-width: 230px;
+        max-width: 245px;
         height: 70px;
         overflow: hidden;
-        float: left;
+        /*float: left;*/
         text-align: center;
         background-color: hsl(190, 90%, 45%);
         color: black;
         border-radius: 3px;
-        margin-right: 0px;
+        margin-right: 6px;
         margin-left: 0px;
         margin-bottom: 5px;
         position: relative;
@@ -83,12 +84,10 @@
       main {
         overflow-y: auto;
         max-height: calc(100% - 72px);
+        overflow-x: none;
       }
       main.repo {
         max-height: calc(100% - 72px * 2);
-      }
-      main::-webkit-scrollbar {
-        display: none;
       }
       footer {
         background-color: transparent;
