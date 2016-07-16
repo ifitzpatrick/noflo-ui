@@ -52,7 +52,10 @@ exports.getComponent = ->
     ctx = buildContext()
     ctx.runtime = findRuntime route.runtime, c.params.runtimes
     return sendError out, new Error 'No runtime found'  unless ctx.runtime
-    ctx.remote = route.nodes
+    if route.nodes.length and not route.nodes[route.nodes.length - 1]
+      ctx.remote = route.nodes.slice(0, -1)
+    else
+      ctx.remote = route.nodes
     ctx.state = 'loading'
     out.send ctx
     

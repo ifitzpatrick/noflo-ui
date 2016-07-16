@@ -6,7 +6,7 @@
       <form>
         <label>
           Graph name
-          <input type="text" value="{{ name }}" placeholder="MyCoolGraph" required>
+          <input id="graphName" type="text" value="{{ name }}" placeholder="MyCoolGraph" required>
         </label>
         <template if="{{ project }}">
           runtimes
@@ -30,6 +30,9 @@
       type: 'noflo-browser',
       attached: function () {
         document.getElementById('container').classList.add('blur');
+        this.$.graphName.addEventListener('keydown', function (event) {
+          event.stopPropagation();
+        });
       },
       detached: function () {
         document.getElementById('container').classList.remove('blur');

@@ -242,7 +242,7 @@
           if (this.project) {
             this.gotoGraph(graph.properties.id);
           } else {
-            this.graphLibrary.push(graph);
+            this.graphLibrary.push({id: graph.properties.id});
             this.gotoLibraryGraph(graph.properties.id);
           }
         }.bind(this));

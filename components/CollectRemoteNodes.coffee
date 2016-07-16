@@ -17,7 +17,7 @@ exports.getComponent = ->
       c.context = payload
 
       if 'graph:getgraph' in payload.runtime.definition.capabilities
-        graphName = payload.remote[payload.remote.length - 1]
+        graphName = payload.remote.shift()
         payload.graphs.push graph = new noflo.Graph graphName, caseSensitive: true
         graph.id = graphName
         payload.state = 'ok'
