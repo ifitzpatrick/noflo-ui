@@ -18,8 +18,10 @@ exports.getComponent = ->
     unless data.runtime.definition
       return c.error new Error 'Runtime has no definition available'
 
+    data.remote = [] unless data.remote
+    data.graphs = [] unless data.graphs
+
     if data.runtime.definition.graph
-      data.remote = [] unless data.remote
       if data.remote.indexOf(data.runtime.definition.graph) is -1
         data.remote.unshift data.runtime.definition.graph
       out.send data
@@ -27,11 +29,11 @@ exports.getComponent = ->
 
     # No graph available, prepare empty
     data.state = 'ok'
-    data.graphs = [] unless data.graphs
-    unless data.graphs.length
-      emptyGraph = new noflo.Graph data.runtime.definition.id
+    unless data.graphs.length or data.remote.length
+      emptyGraph = new noflo.Graph data.runtime.definition.id, caseSensitive: true
       emptyGraph.properties.id = data.runtime.definition.id
       data.graphs.unshift emptyGraph
+      data.remote.unshift emptyGraph.properties.id
     out.send data
 
   c
