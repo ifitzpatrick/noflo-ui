@@ -63,6 +63,7 @@ SubscribeGraph GRAPH -> GRAPH SendGraph
 
 SubscribeGraph GRAPH -> GRAPH UpdateGraph(ui/UpdateGraph)
 ListenRuntime GRAPH -> EVENT UpdateGraph
+UpdateGraph OUT -> IN MergeContext
 
 SubscribeGraph OUT -> IN MergeContext(core/Merge)
 

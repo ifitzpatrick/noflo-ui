@@ -304,6 +304,12 @@
         for (var key in context) {
           this.ctx[key] = context[key];
         }
+        if (context.redraw) {
+          if (this.$.grapheditor.$.graph.graphView) {
+            this.$.grapheditor.$.graph.graphView.markDirty();
+          }
+          delete this.ctx.redraw;
+        }
         if (context.projects) {
           this.$.main.projects = context.projects;
         }

@@ -227,7 +227,9 @@ class UpdateGraph extends noflo.Component
                 graph.setGroupMetadata name, metadata
 
           graph._events = _events
+          @outPorts.out.send redraw: true
 
     @outPorts = new noflo.OutPorts
+    @outPorts.add 'out', datatype: 'object'
 
 exports.getComponent = -> new UpdateGraph
