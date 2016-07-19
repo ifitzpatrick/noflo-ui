@@ -124,7 +124,7 @@ class UpdateGraph extends noflo.Component
                 graph.setEdgeMetadata srcNode, srcPort, targetNode, targetPort, metadata
 
             when 'addinitial'
-              data = payload.payload.data
+              data = payload.payload.src.data
               node = payload.payload.tgt.node
               port = payload.payload.tgt.port
               index = payload.payload.tgt.index
